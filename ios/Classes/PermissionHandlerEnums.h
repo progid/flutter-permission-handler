@@ -6,7 +6,7 @@
 //
 
 typedef NS_ENUM(int, PermissionGroup) {
-    PermissionGroupContacts = 2,
+    PermissionGroupContacts = 0,
     PermissionGroupUnknown,
 };
 
