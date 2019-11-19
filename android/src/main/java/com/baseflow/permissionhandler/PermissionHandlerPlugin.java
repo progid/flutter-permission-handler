@@ -215,32 +215,12 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
     for (String name : names) {
       // Only handle them if the client app actually targets a API level greater than M.
       if (targetsMOrHigher) {
-        if (permission == PERMISSION_GROUP_IGNORE_BATTERY_OPTIMIZATIONS) {
-          String packageName = context.getPackageName();
-          PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-          // PowerManager.isIgnoringBatteryOptimizations has been included in Android M first.
-          if (VERSION.SDK_INT >= VERSION_CODES.M) {
-            if (pm.isIgnoringBatteryOptimizations(packageName)) {
-              return PERMISSION_STATUS_GRANTED;
-            } else {
-              return PERMISSION_STATUS_DENIED;
-            }
-          } else {
-            return PERMISSION_STATUS_RESTRICTED;
-          }
-        }
         final int permissionStatus = ContextCompat.checkSelfPermission(context, name);
         if (permissionStatus == PackageManager.PERMISSION_DENIED) {
           return PERMISSION_STATUS_DENIED;
         } else if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
           return PERMISSION_STATUS_UNKNOWN;
         }
-      }
-    }
-
-    if (permission == PERMISSION_GROUP_LOCATION || permission == PERMISSION_GROUP_LOCATION_ALWAYS || permission == PERMISSION_GROUP_LOCATION_WHEN_IN_USE) {
-      if (!isLocationServiceEnabled(context)) {
-        return PERMISSION_STATUS_DISABLED;
       }
     }
 
@@ -254,42 +234,6 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
     if (context == null) {
       Log.d(LOG_TAG, "Unable to detect current Activity or App Context.");
       return SERVICE_STATUS_UNKNOWN;
-    }
-
-    if (permission == PERMISSION_GROUP_LOCATION || permission == PERMISSION_GROUP_LOCATION_ALWAYS || permission == PERMISSION_GROUP_LOCATION_WHEN_IN_USE) {
-      return isLocationServiceEnabled(context) ? SERVICE_STATUS_ENABLED : SERVICE_STATUS_DISABLED;
-    }
-
-    if (permission == PERMISSION_GROUP_PHONE) {
-      PackageManager pm = context.getPackageManager();
-      if (!pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
-        return SERVICE_STATUS_NOT_APPLICABLE;
-      }
-
-      TelephonyManager telephonyManager = (TelephonyManager) context
-          .getSystemService(Context.TELEPHONY_SERVICE);
-
-      if (telephonyManager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
-        return SERVICE_STATUS_NOT_APPLICABLE;
-      }
-
-      Intent callIntent = new Intent(Intent.ACTION_CALL);
-      callIntent.setData(Uri.parse("tel:123123"));
-      List<ResolveInfo> callAppsList = pm.queryIntentActivities(callIntent, 0);
-
-      if (callAppsList.isEmpty()) {
-        return SERVICE_STATUS_NOT_APPLICABLE;
-      }
-
-      if (telephonyManager.getSimState() != TelephonyManager.SIM_STATE_READY) {
-        return SERVICE_STATUS_DISABLED;
-      }
-
-      return SERVICE_STATUS_ENABLED;
-    }
-
-    if (permission == PERMISSION_GROUP_IGNORE_BATTERY_OPTIMIZATIONS) {
-      return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? SERVICE_STATUS_ENABLED : SERVICE_STATUS_NOT_APPLICABLE;
     }
 
     return SERVICE_STATUS_NOT_APPLICABLE;
