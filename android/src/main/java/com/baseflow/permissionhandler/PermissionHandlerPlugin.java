@@ -196,10 +196,6 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
       return PERMISSION_STATUS_UNKNOWN;
     }
 
-    if (permission == PERMISSION_GROUP_NOTIFICATION) {
-      return checkNotificationPermissionStatus(context);
-    }
-
     final List<String> names = getManifestNames(permission);
 
     if (names == null) {
@@ -355,15 +351,7 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
           continue;
         }
 
-        if (permission == PERMISSION_GROUP_IGNORE_BATTERY_OPTIMIZATIONS) {
-          String packageName = mRegistrar.context().getPackageName();
-          Intent intent = new Intent();
-          intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-          intent.setData(Uri.parse("package:" + packageName));
-          mRegistrar.activity().startActivityForResult(intent, PERMISSION_CODE_IGNORE_BATTERY_OPTIMIZATIONS);
-        } else {
-          permissionsToRequest.addAll(names);
-        }
+        permissionsToRequest.addAll(names); 
       } else {
         if (!mRequestResults.containsKey(permission)) {
           mRequestResults.put(permission, PERMISSION_STATUS_GRANTED);
@@ -389,34 +377,7 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
       if (permission == PERMISSION_GROUP_UNKNOWN)
         continue;
 
-      if (permission == PERMISSION_GROUP_MICROPHONE) {
-        if (!mRequestResults.containsKey(PERMISSION_GROUP_MICROPHONE)) {
-          mRequestResults.put(PERMISSION_GROUP_MICROPHONE, toPermissionStatus(grantResults[i]));
-        }
-        if (!mRequestResults.containsKey(PERMISSION_GROUP_SPEECH)) {
-          mRequestResults.put(PERMISSION_GROUP_SPEECH, toPermissionStatus(grantResults[i]));
-        }
-      } else if (permission == PERMISSION_GROUP_LOCATION_ALWAYS) {
-        @PermissionStatus int permissionStatus = determineActualLocationStatus(grantResults[i]);
-
-        if (!mRequestResults.containsKey(PERMISSION_GROUP_LOCATION_ALWAYS)) {
-          mRequestResults.put(PERMISSION_GROUP_LOCATION_ALWAYS, permissionStatus);
-        }
-      } else if (permission == PERMISSION_GROUP_LOCATION) {
-        @PermissionStatus int permissionStatus = determineActualLocationStatus(grantResults[i]);
-
-        if (VERSION.SDK_INT < VERSION_CODES.Q) {
-          if (!mRequestResults.containsKey(PERMISSION_GROUP_LOCATION_ALWAYS)) {
-            mRequestResults.put(PERMISSION_GROUP_LOCATION_ALWAYS, permissionStatus);
-          }
-        }
-
-        if (!mRequestResults.containsKey(PERMISSION_GROUP_LOCATION_WHEN_IN_USE)) {
-          mRequestResults.put(PERMISSION_GROUP_LOCATION_WHEN_IN_USE, permissionStatus);
-        }
-
-        mRequestResults.put(permission, permissionStatus);
-      } else if (!mRequestResults.containsKey(permission)) {
+      if (!mRequestResults.containsKey(permission)) {
         mRequestResults.put(permission, toPermissionStatus(grantResults[i]));
       }
     }
@@ -447,8 +408,6 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
     }
 
     int status = granted ? PERMISSION_STATUS_GRANTED : PERMISSION_STATUS_DENIED;
-
-    mRequestResults.put(PERMISSION_GROUP_IGNORE_BATTERY_OPTIMIZATIONS, status);
 
     processResult();
   }
