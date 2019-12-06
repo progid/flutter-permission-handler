@@ -46,7 +46,9 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
 
   //PERMISSION_GROUP
   private static final int PERMISSION_GROUP_CONTACTS = 0;
-  private static final int PERMISSION_GROUP_UNKNOWN = 1;
+  private static final int PERMISSION_GROUP_LOCATION = 1;
+  private static final int PERMISSION_GROUP_LOCATION_WHEN_IN_USE = 2;
+  private static final int PERMISSION_GROUP_UNKNOWN = 3;
 
   private PermissionHandlerPlugin(Registrar mRegistrar) {
     this.mRegistrar = mRegistrar;
@@ -55,6 +57,8 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({
       PERMISSION_GROUP_CONTACTS,
+      PERMISSION_GROUP_LOCATION,
+      PERMISSION_GROUP_LOCATION_WHEN_IN_USE,
       PERMISSION_GROUP_UNKNOWN,
   })
   private @interface PermissionGroup {
@@ -132,6 +136,9 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
       case Manifest.permission.WRITE_CONTACTS:
       case Manifest.permission.GET_ACCOUNTS:
         return PERMISSION_GROUP_CONTACTS;
+      case Manifest.permission.ACCESS_COARSE_LOCATION:
+      case Manifest.permission.ACCESS_FINE_LOCATION:
+        return PERMISSION_GROUP_LOCATION;
       default:
         return PERMISSION_GROUP_UNKNOWN;
     }
@@ -224,6 +231,12 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
       }
     }
 
+    if (permission == PERMISSION_GROUP_LOCATION || permission == PERMISSION_GROUP_LOCATION_WHEN_IN_USE) {
+      if (!isLocationServiceEnabled(context)) {
+        return PERMISSION_STATUS_DISABLED;
+      }
+    }
+
     return PERMISSION_STATUS_GRANTED;
   }
 
@@ -234,6 +247,10 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
     if (context == null) {
       Log.d(LOG_TAG, "Unable to detect current Activity or App Context.");
       return SERVICE_STATUS_UNKNOWN;
+    }
+
+    if (permission == PERMISSION_GROUP_LOCATION || permission == PERMISSION_GROUP_LOCATION_WHEN_IN_USE) {
+      return isLocationServiceEnabled(context) ? SERVICE_STATUS_ENABLED : SERVICE_STATUS_DISABLED;
     }
 
     return SERVICE_STATUS_NOT_APPLICABLE;
@@ -321,7 +338,15 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
       if (permission == PERMISSION_GROUP_UNKNOWN)
         continue;
 
-      if (!mRequestResults.containsKey(permission)) {
+      if (permission == PERMISSION_GROUP_LOCATION) {
+        @PermissionStatus int permissionStatus = determineActualLocationStatus(grantResults[i]);
+
+        if (!mRequestResults.containsKey(PERMISSION_GROUP_LOCATION_WHEN_IN_USE)) {
+          mRequestResults.put(PERMISSION_GROUP_LOCATION_WHEN_IN_USE, permissionStatus);
+        }
+
+        mRequestResults.put(permission, permissionStatus);
+      } else if (!mRequestResults.containsKey(permission)) {
         mRequestResults.put(permission, toPermissionStatus(grantResults[i]));
       }
     }
@@ -405,6 +430,14 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
 
         if (hasPermissionInManifest(Manifest.permission.GET_ACCOUNTS))
           permissionNames.add(Manifest.permission.GET_ACCOUNTS);
+        break;
+      case PERMISSION_GROUP_LOCATION_WHEN_IN_USE:
+      case PERMISSION_GROUP_LOCATION:
+        if (hasPermissionInManifest(Manifest.permission.ACCESS_COARSE_LOCATION))
+          permissionNames.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        if (hasPermissionInManifest(Manifest.permission.ACCESS_FINE_LOCATION))
+          permissionNames.add(Manifest.permission.ACCESS_FINE_LOCATION);
         break;
         
       case PERMISSION_GROUP_UNKNOWN:

@@ -11,6 +11,7 @@
 
 #import "ContactPermissionStrategy.h"
 #import "PermissionStrategy.h"
+#import "LocationPermissionStrategy.h"
 #import "UnknownPermissionStrategy.h"
 #import "PermissionHandlerEnums.h"
 #import "Codec.h"

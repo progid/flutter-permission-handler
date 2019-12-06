@@ -77,6 +77,9 @@
     switch (permission) {
         case PermissionGroupContacts:
             return [ContactPermissionStrategy new];
+        case PermissionGroupLocation:
+        case PermissionGroupLocationWhenInUse:
+            return [[LocationPermissionStrategy alloc] initWithLocationManager];
         default:
             return [UnknownPermissionStrategy new];
     }
