@@ -45,10 +45,9 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
   private static final int PERMISSION_CODE_IGNORE_BATTERY_OPTIMIZATIONS = 5672353;
 
   //PERMISSION_GROUP
-  private static final int PERMISSION_GROUP_CONTACTS = 0;
-  private static final int PERMISSION_GROUP_LOCATION = 1;
-  private static final int PERMISSION_GROUP_LOCATION_WHEN_IN_USE = 2;
-  private static final int PERMISSION_GROUP_UNKNOWN = 3;
+  private static final int PERMISSION_GROUP_LOCATION = 0;
+  private static final int PERMISSION_GROUP_LOCATION_WHEN_IN_USE = 1;
+  private static final int PERMISSION_GROUP_UNKNOWN = 2;
 
   private PermissionHandlerPlugin(Registrar mRegistrar) {
     this.mRegistrar = mRegistrar;
@@ -56,7 +55,6 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
 
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({
-      PERMISSION_GROUP_CONTACTS,
       PERMISSION_GROUP_LOCATION,
       PERMISSION_GROUP_LOCATION_WHEN_IN_USE,
       PERMISSION_GROUP_UNKNOWN,
@@ -132,10 +130,6 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
   @PermissionGroup
   private static int parseManifestName(String permission) {
     switch (permission) {
-      case Manifest.permission.READ_CONTACTS:
-      case Manifest.permission.WRITE_CONTACTS:
-      case Manifest.permission.GET_ACCOUNTS:
-        return PERMISSION_GROUP_CONTACTS;
       case Manifest.permission.ACCESS_COARSE_LOCATION:
       case Manifest.permission.ACCESS_FINE_LOCATION:
         return PERMISSION_GROUP_LOCATION;
@@ -421,16 +415,6 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
     final ArrayList<String> permissionNames = new ArrayList<>();
 
     switch (permission) {
-      case PERMISSION_GROUP_CONTACTS:
-        if (hasPermissionInManifest(Manifest.permission.READ_CONTACTS))
-          permissionNames.add(Manifest.permission.READ_CONTACTS);
-
-        if (hasPermissionInManifest(Manifest.permission.WRITE_CONTACTS))
-          permissionNames.add(Manifest.permission.WRITE_CONTACTS);
-
-        if (hasPermissionInManifest(Manifest.permission.GET_ACCOUNTS))
-          permissionNames.add(Manifest.permission.GET_ACCOUNTS);
-        break;
       case PERMISSION_GROUP_LOCATION_WHEN_IN_USE:
       case PERMISSION_GROUP_LOCATION:
         if (hasPermissionInManifest(Manifest.permission.ACCESS_COARSE_LOCATION))

@@ -83,30 +83,24 @@ class PermissionGroup {
 
   final int value;
 
-  /// Android: Contacts
-  /// iOS: AddressBook
-  static const PermissionGroup contacts = PermissionGroup._(0);
-
   /// Android: Fine and Coarse Location
   /// iOS: CoreLocation (Always and WhenInUse)
-  static const PermissionGroup location = PermissionGroup._(1);
+  static const PermissionGroup location = PermissionGroup._(0);
 
   /// Android: Fine and Coarse Location
   /// iOS: CoreLocation - WhenInUse
-  static const PermissionGroup locationWhenInUse = PermissionGroup._(2);
+  static const PermissionGroup locationWhenInUse = PermissionGroup._(1);
 
   /// The unknown permission only used for return type, never requested
-  static const PermissionGroup unknown = PermissionGroup._(3);
+  static const PermissionGroup unknown = PermissionGroup._(2);
 
   static const List<PermissionGroup> values = <PermissionGroup>[
-    contacts,
     location,
     locationWhenInUse,
     unknown,
   ];
 
   static const List<String> _names = <String>[
-    'contacts',
     'location',
     'locationWhenInUse',
     'unknown',

@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#import "ContactPermissionStrategy.h"
 #import "PermissionStrategy.h"
 #import "LocationPermissionStrategy.h"
 #import "UnknownPermissionStrategy.h"
