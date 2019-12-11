@@ -1,6 +1,6 @@
 //
 //  PermissionHandlerEnums.h
-//  permission_handler
+//  permission_geo_handler
 //
 //  Created by Razvan Lung on 15/02/2019.
 //

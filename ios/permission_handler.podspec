@@ -2,7 +2,7 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name             = 'permission_handler'
+  s.name             = 'permission_geo_handler'
 s.version            = '4.0.0'
   s.summary          = 'Permission plugin for Flutter.'
   s.description      = <<-DESC

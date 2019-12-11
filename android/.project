@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>permission_handler</name>
-	<comment>Project permission_handler created by Buildship.</comment>
+	<name>permission_geo_handler</name>
+	<comment>Project permission_geo_handler created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>

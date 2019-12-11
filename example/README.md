@@ -1,6 +1,6 @@
-# permission_handler_example
+# permission_geo_handler_example
 
-Demonstrates how to use the permission_handler plugin.
+Demonstrates how to use the permission_geo_handler plugin.
 
 ## Getting Started
 

@@ -1,4 +1,4 @@
-name: permission_handler
+name: permission_geo_handler
 description: Permission plugin for Flutter. This plugin provides a cross-platform (iOS, Android) API to request and check permissions.
 version: 4.0.0
 authors:

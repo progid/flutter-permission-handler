@@ -1,5 +1,5 @@
-name: permission_handler_example
-description: Demonstrates how to use the permission_handler plugin.
+name: permission_geo_handler_example
+description: Demonstrates how to use the permission_geo_handler plugin.
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -12,7 +12,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  permission_handler:
+  permission_geo_handler:
     path: ../
 
 flutter:

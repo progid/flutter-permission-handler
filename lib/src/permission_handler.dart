@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
-import 'package:permission_handler/src/permission_enums.dart';
-import 'package:permission_handler/src/utils/codec.dart';
+import 'package:permission_geo_handler/src/permission_enums.dart';
+import 'package:permission_geo_handler/src/utils/codec.dart';
 
 /// Provides a cross-platform (iOS, Android) API to request and check permissions.
 class PermissionHandler {

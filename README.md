@@ -1,6 +1,6 @@
 # Flutter Permission handler Plugin
 
-[![pub package](https://img.shields.io/pub/v/permission_handler.svg)](https://pub.dartlang.org/packages/permission_handler)
+[![pub package](https://img.shields.io/pub/v/permission_geo_handler.svg)](https://pub.dartlang.org/packages/permission_geo_handler)
 
 A permissions plugin for Flutter. This plugin provides a cross-platform (iOS, Android) API to request and check permissions.
 
@@ -18,14 +18,14 @@ master  | [![Build Status](https://app.bitrise.io/app/fa4f5d4bf452bcfb/status.sv
 
 ## Usage
 
-To use this plugin, add `permission_handler` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/). For example:
+To use this plugin, add `permission_geo_handler` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/). For example:
 
 ```yaml
 dependencies:
-  permission_handler: '^4.0.0'
+  permission_geo_handler: '^4.0.0'
 ```
 
-> **NOTE:** As of version 3.1.0 the permission_handler plugin switched to the AndroidX version of the Android Support Libraries. This means you need to make sure your Android project is also upgraded to support AndroidX. Detailed instructions can be found [here](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility). 
+> **NOTE:** As of version 3.1.0 the permission_geo_handler plugin switched to the AndroidX version of the Android Support Libraries. This means you need to make sure your Android project is also upgraded to support AndroidX. Detailed instructions can be found [here](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility). 
 >
 >The TL;DR version is:
 >
@@ -53,14 +53,14 @@ For this plugin to work you will have to add permission configuration to your `A
 - [AndroidManifest.xml](https://github.com/BaseflowIT/flutter-permission-handler/blob/develop/example/android/app/src/main/AndroidManifest.xml) (note that there is a debug, main and profile version which are used depending on how you start your App. In general it is sufficient to add permissions only to the `main` version);
 - [Info.plist](https://github.com/BaseflowIT/flutter-permission-handler/blob/develop/example/ios/Runner/Info.plist)
 
-> IMPORTANT: On iOS you will have to include all permission options when you want to submit your App. This is because the `permission_handler` plugin touches all different SDKs and because the static code analyser (run by Apple upon App submission) detects this and will assert if it cannot find a matching permission option in the `Info.plist`. More information about this can be found [here](https://github.com/BaseflowIT/flutter-permission-handler/issues/26). Unfortunately we don't have a good solution for this.    
+> IMPORTANT: On iOS you will have to include all permission options when you want to submit your App. This is because the `permission_geo_handler` plugin touches all different SDKs and because the static code analyser (run by Apple upon App submission) detects this and will assert if it cannot find a matching permission option in the `Info.plist`. More information about this can be found [here](https://github.com/BaseflowIT/flutter-permission-handler/issues/26). Unfortunately we don't have a good solution for this.    
 
 ## API
 
 ### Requesting permission
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_geo_handler/permission_geo_handler.dart';
 
 Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.contacts]);
 ```
@@ -68,7 +68,7 @@ Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().r
 ### Checking permission
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_geo_handler/permission_geo_handler.dart';
 
 PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.contacts);
 ```
@@ -76,7 +76,7 @@ PermissionStatus permission = await PermissionHandler().checkPermissionStatus(Pe
 ### Checking service status
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_geo_handler/permission_geo_handler.dart';
 
 ServiceStatus serviceStatus = await PermissionHandler().checkServiceStatus(PermissionGroup.location);
 ```
@@ -86,7 +86,7 @@ Checking the service status only makes sense for the `PermissionGroup.location` 
 ### Open app settings
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_geo_handler/permission_geo_handler.dart';
 
 bool isOpened = await PermissionHandler().openAppSettings();
 ```
@@ -94,7 +94,7 @@ bool isOpened = await PermissionHandler().openAppSettings();
 ### Show a rationale for requesting permission (Android only)
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_geo_handler/permission_geo_handler.dart';
 
 bool isShown = await PermissionHandler().shouldShowRequestPermissionRationale(PermissionGroup.contacts);
 ```

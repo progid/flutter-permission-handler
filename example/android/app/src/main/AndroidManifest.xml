@@ -3,7 +3,7 @@
     package="com.example.permissionhandlerexample">
 
     <!--
-    Internet permissions do not affect the `permission_handler` plugin, but are required if your app needs access to
+    Internet permissions do not affect the `permission_geo_handler` plugin, but are required if your app needs access to
     the internet.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -54,7 +54,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
-        android:label="permission_handler_example"
+        android:label="permission_geo_handler_example"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name=".MainActivity"
